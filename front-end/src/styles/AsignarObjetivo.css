@@ -1,0 +1,24 @@
+.form-asignar-objetivo{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+}
+.contenedor-barra-asignar{
+    display: flex;
+    gap: 5px;
+
+}
+.barra-asignar{
+    width: 100%;
+}
+.asignar{
+    margin: 5px 0px 5px 0px;
+}
+.boton-asignar-objetivo{
+    width: 100%;
+}
+@media (max-width: 1280px){
+    .form-asignar-objetivo{
+        max-width: 400px;
+    } 
+}

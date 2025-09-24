@@ -1,0 +1,16 @@
+.boton-link {
+    display: block;
+    padding: 10px 20px;
+    background-color: rgb(255, 183, 0);
+    color: white;
+    width: auto;
+    font-size: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.boton-link:hover {
+    background-color: rgb(215, 74, 3); /* Color al hacer hover */
+}

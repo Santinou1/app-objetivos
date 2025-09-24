@@ -1,0 +1,47 @@
+.contenedor-redireccion{
+    display: flex;
+    justify-content: center;
+
+}
+
+.cartel{
+    background: rgb(186, 255, 186);
+    width: 95%;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    
+}
+.contenedor-check{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.green-text{
+    color: rgb(0, 68, 0);
+}
+
+.cls-1 {
+    fill: #699f4c;
+    fill-rule: evenodd;
+}
+
+.lista-redireccion{
+    line-height: 30px;
+    list-style-type:disc ;
+}
+.punto{
+    color: green;
+}
+.link-verde:link{
+    color: green;
+}
+.link-verde:visited{
+    color: green;
+}
+.link-verde:hover { 
+    color: rgb(53, 210, 53); /* Color cuando se pasa el ratón por encima */
+}
+.link-verde:active { 
+    color: green; /* Color cuando se hace clic en el enlace */
+}

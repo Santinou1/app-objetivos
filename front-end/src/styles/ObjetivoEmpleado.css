@@ -1,0 +1,111 @@
+.container-objetivo-empleado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 100%;
+}
+.cuadrado{
+    background-color: rgb(255, 227, 167);
+    padding: 10px;
+    width: 90%;
+    height:auto;
+    border-radius: 15px;
+    margin-top: 3%;
+    box-shadow: -1px 1px 15px 2px rgba(79, 79, 79, 0.75);
+    -webkit-box-shadow: -1px 1px 15px 2px rgba(77, 77, 77, 0.75);
+    -moz-box-shadow: -1px 1px 15px 2px rgba(85, 85, 85, 0.75);
+
+}
+.contenedor-botones{
+    display: flex;
+}
+.contenedor-fecha-boton{
+    display: flex;
+    justify-content: space-between;
+}
+.boton-rojo{
+    width: 400px;
+}
+
+.boton-obj-emp{
+    margin: 10px;
+}
+.boton-deshabilitado{
+    margin: 10px;
+    background-color: lightgray;
+    color: gray;
+    cursor: not-allowed;
+}
+.boton-deshabilitado:hover{
+    background-color: lightgray;
+    color: gray;
+    cursor: not-allowed;
+}
+.boton-obj-emp-eli{
+    background-color: rgb(200, 0, 10);
+}
+.boton-obj-emp-eli:hover{
+    background-color: rgb(255, 0, 13);
+}
+.boton-desactivado{
+    background-color: lightgray;
+    color: gray;
+    cursor: not-allowed;
+    margin-top: 0px;
+}
+.boton-desactivado:hover{
+    background-color: lightgray;
+    color: gray;
+    cursor: not-allowed;
+}
+.lista-puntuacion{
+    
+    list-style-type: none;
+    
+}
+.contenedor-lista{
+    
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid orange ;
+    background: white;
+    border-radius: 10px;
+    padding: 10px
+}
+.contenedor-punto{
+    margin-top: 10px;
+}
+.contenedor-archivos{
+    height: auto;
+    max-height: 200px;
+    padding: 10px;
+    overflow-y: auto;
+}
+.subir-archivos{
+    display: flex;
+    justify-content: center;
+    flex-direction:row;
+    align-items: center;
+    gap: 10px; /* Espacio entre el input y el botón */
+    
+}
+.boton-subir-archivos{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+@media (max-width: 1280px){
+    .cuadrado{
+        max-height: 700px;
+    } 
+    .contenedor-lista{
+        height: auto;
+        max-height: 400px;
+    }
+    .boton-desactivado{
+        width: auto;
+    }
+    .boton-subir-archivos{
+        width: auto;
+    }
+}

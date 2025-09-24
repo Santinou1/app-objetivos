@@ -1,0 +1,11 @@
+.contenedor-sinElementos{
+    background-color: rgb(206, 206, 206);
+    color: rgb(108, 108, 108);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+.puntuacion{
+    padding: 2px 5px 2px 5px;
+    margin: 0px;
+}

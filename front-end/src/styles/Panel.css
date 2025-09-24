@@ -1,0 +1,20 @@
+.container-tipo-lista{
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid rgb(255, 183, 0);
+    gap: 10px;
+    width: fit-content;
+    justify-self: end;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.toggle-lista{
+    width: 100%;
+    
+}
+.seleccionado{
+    background-color: rgb(255, 183, 0);
+    color: white;
+    font-weight: bold;
+}

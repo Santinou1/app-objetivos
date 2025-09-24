@@ -1,0 +1,24 @@
+.conetendor-puntuacion-actualizar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 95vh;
+}
+.contenedor-actualizar{
+    width: 500px;
+}
+.titulo-puntuacion{
+    width: 100%;
+    text-align: center;
+}
+.input-puntuacion{
+    width: 100%;
+}
+.actualizar-puntuacion-boton{
+    width: 100%;
+}
+@media (max-width: 1280px){
+    .contenedor-actualizar{
+        max-width: 400px;
+    } 
+}

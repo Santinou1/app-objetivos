@@ -1,0 +1,53 @@
+.contenedor-objetivo{
+    background-color: rgb(255, 227, 167);
+    border-radius: 10px;
+    border: 2px;
+    padding: 10px;
+    margin: 10px;
+}
+.peso-p{
+    margin: 0px;
+}
+.linea-objetivo{
+    width: 100%;
+    border: 1px solid orange;
+
+}
+.botones-panel{
+    margin-top: 0px;
+}
+.contenedor-progreso{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.cabecera-objetivo{
+    display: flex;
+    align-items: center;
+}
+.titulo-del-objetivo{
+    width: 40%;
+}
+.fechas-objetivo{
+    width: 33%;
+}
+.contenedor-botones-panel{
+    display: flex;
+    width: 40%;
+    gap: 20px;
+}
+.contenedor-fechas {
+    display: flex;
+    
+    width: 40%;
+}
+
+.contenedor-boton-feed{
+    display: flex;
+    justify-content: end;
+    width: 30%;
+    
+}
+.pdf-temp-style {
+    width: 50%;
+  }

@@ -1,0 +1,66 @@
+.contenedor-input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+.form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+}
+.titulo{
+    text-align: center;
+}
+.form-agregar{
+    display: flex;
+    flex-direction: column;
+}
+.contenedor-radio{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.label-radio{
+    display: flex;
+    align-items: center;
+    width: 100%;
+   justify-content: center;
+}
+.input-radio{
+    width: 20px;
+    color: aqua;
+}
+.input-text{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+}
+.input-select{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    
+    border: 2px solid  #fbb003;
+}
+.input-select:focus {
+    outline: none;
+    border-color: #ff8000;
+    
+}
+.boton-submit{
+    width: 100%;
+}
+@media (max-width: 1280px){
+    p{
+        margin: 0px;
+    } 
+    .input-radio{
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+    .form-container{
+        height: 94vh;
+    }
+}

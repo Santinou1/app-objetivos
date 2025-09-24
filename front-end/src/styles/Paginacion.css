@@ -1,0 +1,13 @@
+.boton-paginacion{
+    background: #fbb003;
+    padding: 7px;
+    width: 33%;
+    border-radius: 10px;
+    color: white;
+}
+.boton-paginacion:hover{
+    background-color: #ff8000
+}
+.siguiente{
+    text-align: end;
+}

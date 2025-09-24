@@ -1,0 +1,43 @@
+.contenedor-redireccion{
+    display: flex;
+    justify-content: center;
+
+}
+
+.cartel-mensaje{
+    background: rgb(186, 255, 186);
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.cartel-error-mensaje{
+    background: rgb(255, 186, 186);
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.contenedor-check-mensaje{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.contenedor-mensaje{
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+.green-text{
+    color: rgb(0, 68, 0);
+}
+.red-text{
+    color: rgb(159, 10, 10);
+}
+.cls-1 {
+    fill: #699f4c;
+    fill-rule: evenodd;
+}
+

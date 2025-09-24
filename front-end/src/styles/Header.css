@@ -1,0 +1,38 @@
+/* src/components/Header.css */
+.cerrar-sesion{
+  cursor: pointer;
+}
+.header {
+    position: fixed;
+    top: 0; /* Posición en la parte superior */
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fbb003;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    border-radius: 0px 0px 10px 10px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links li a {
+    font-family: 'Josefin Sans', sans-serif;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    transition: background-color 0.8s ease;
+    border-radius: 5px;
+  }
+  
+  .nav-links li a:hover {
+    background-color: #ff8000;
+  }
+  
