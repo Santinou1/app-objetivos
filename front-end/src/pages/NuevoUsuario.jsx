@@ -131,8 +131,8 @@ function NuevoUsuario(){
                     <input type="password" className="input-text" {...register('confirmar')}></input>
                 </div>
 
-                <div className="contenedor-input">
-                    <label><b>¿Es administrador?</b></label>
+                <div className="contenedor-input-admin">
+                    <label className="label-admin"><b>¿Es administrador?</b></label>
                     <div className="contenedor-radio">
                         <label className="label-radio">
                             <input

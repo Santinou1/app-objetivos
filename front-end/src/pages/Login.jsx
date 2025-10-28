@@ -23,7 +23,7 @@ function Login(){
         if(user.rol==='admin'){
             ruta= '/panel';
         }else{
-            ruta = `/feed/${user.empleado}`;
+            ruta = `/feed/objetivos/${user.empleado}`;
         }}else{
             ruta = `/cuenta-deshabilitada`;
         }
