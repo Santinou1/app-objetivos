@@ -3,7 +3,7 @@ import "../styles/ObjetivoNuevos.css";
 import { Navigate } from "react-router-dom";
 import { getApiUrl } from "../config/configURL";
 import axios from "axios";
-function NuevaCertificacion(){
+function NuevaCertificacion({ tipoDeItem, cambiarTipoDeItem }){
     const [marcas, setMarcas] = useState([]);
     const [marca, setMarca] = useState('');
     const [nombreCertificacion, setNombreCertificacion] = useState('');
@@ -38,21 +38,32 @@ function NuevaCertificacion(){
             });
       
     }
-    
     if(redirect){
         return <Navigate to="/redireccion/certificacion"/>
     }
     return(
         <div className="objetivo-container">
             <form className="form-objetivo" onSubmit={onsubmit}>
-                <h1  className="titulo-puntuacion">Agregar objetivo</h1>
-                <div className="contenedor-input">
-                    <label className="label-form">Título:</label>
-                    <input 
-                        type="text" 
-                        className="input-objetivo-nuevo" 
-                        value={nombreCertificacion} 
-                        onChange={(e)=>setNombreCertificacion(e.target.value)}/>
+                <h1  className="titulo-puntuacion">Agregar certificación</h1>
+                
+                {/* Fila con título y toggle */}
+                <div className="titulo-con-toggle">
+                    <div className="contenedor-input">
+                        <label className="label-form">Título:</label>
+                        <input 
+                            type="text" 
+                            className="input-objetivo-nuevo" 
+                            value={nombreCertificacion} 
+                            onChange={(e)=>setNombreCertificacion(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {tipoDeItem && cambiarTipoDeItem && (
+                        <div className='container-tipo-lista' onClick={cambiarTipoDeItem}>
+                            <div className={`toggle-lista ${tipoDeItem === "objetivo" ? "seleccionado" : "no-seleccionado"}`}>Objetivo</div>
+                            <div className={`toggle-lista ${tipoDeItem === "certificacion" ? "seleccionado" : "no-seleccionado"}`}>Certificación</div>
+                        </div>
+                    )}
                 </div>
                 <div className="contenedor-input">
                     <label htmlFor="fechaFinal"> Marca: </label>

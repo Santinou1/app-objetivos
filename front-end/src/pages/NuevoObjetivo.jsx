@@ -3,7 +3,7 @@ import { useState } from "react";
 import "../styles/ObjetivoNuevos.css";
 import { Navigate } from "react-router-dom";
 import { getApiUrl } from "../config/configURL";
-function NuevoObjetivo(){
+function NuevoObjetivo({ tipoDeItem, cambiarTipoDeItem }){
     usePageTitle('Home | Medicion de objetos')
     const url = getApiUrl();
     const [texto, setTexto] = useState("");
@@ -70,9 +70,18 @@ function NuevoObjetivo(){
             <form className="form-objetivo" onSubmit={manejarEnvio}>
                 <h1  className="titulo-puntuacion">Agregar objetivo</h1>
                 
-                <div className="contenedor-input">
-                    <label className="label-form">Título</label>
-                    <input type="text" className="input-objetivo-nuevo" value={titulo} onChange={(e)=> setTitulo(e.target.value)}></input>
+                {/* Fila con título y toggle */}
+                <div className="titulo-con-toggle">
+                    <div className="contenedor-input">
+                        <label className="label-form">Título</label>
+                        <input type="text" className="input-objetivo-nuevo" value={titulo} onChange={(e)=> setTitulo(e.target.value)} required />
+                    </div>
+                    {tipoDeItem && cambiarTipoDeItem && (
+                        <div className='container-tipo-lista' onClick={cambiarTipoDeItem}>
+                            <div className={`toggle-lista ${tipoDeItem === "objetivo" ? "seleccionado" : "no-seleccionado"}`}>Objetivo</div>
+                            <div className={`toggle-lista ${tipoDeItem === "certificacion" ? "seleccionado" : "no-seleccionado"}`}>Certificación</div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="contenedor-input">

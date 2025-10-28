@@ -1,20 +1,344 @@
-.lista{
-    list-style: none;
-    padding: 0;
+/* Feed de objetivos con diseño de cards moderno */
+#main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    min-height: calc(100vh - 60px);
 }
-.contenedor-barra{
-    width: 100%;
+
+/* Título principal */
+.titulo {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: var(--spacing-lg) 0 var(--spacing-xl);
+}
+
+/* Línea divisoria */
+.linea {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+    margin: var(--spacing-lg) 0;
+}
+
+/* Sección de barras (admin) */
+.contenedor-barra {
+    background: var(--white);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-xl);
+    margin: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.contenedor-barra h3 {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 var(--spacing-lg) 0;
+    text-align: center;
+}
+
+/* Contenedor de botón y título */
+.contenedor-boton {
     display: flex;
-   
-    justify-content: center;
-}
-.contenedor-boton{
-    display:  flex;
     justify-content: space-between;
-    margin-right: 10px;
+    align-items: center;
+    margin: var(--spacing-xl) 0 var(--spacing-lg) 0;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
 }
-.contenedor-leyendas{
+
+.contenedor-boton h3 {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Leyendas */
+.contenedor-leyendas {
     display: flex;
-    gap: 10px;
+    gap: var(--spacing-lg);
     justify-content: center;
+    flex-wrap: wrap;
+    margin: var(--spacing-xl) 0;
+}
+
+/* Lista de objetivos como grilla definida */
+ul.lista {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--spacing-lg) !important;
+    margin-top: var(--spacing-xl) !important;
+    width: 100%;
+}
+
+ul.lista li {
+    margin: 0 !important;
+    display: block !important;
+}
+
+/* Card de objetivo mejorado */
+.contenedor-objetivo {
+    background: var(--white);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: var(--spacing-xl);
+    transition: all var(--transition-medium);
+    animation: fadeInUp 0.4s ease-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.contenedor-objetivo:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Header del objetivo */
+.cabecera-objetivo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.titulo-del-objetivo {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Contenedor de fechas mejorado */
+.contenedor-fechas {
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+}
+
+.fechas-objetivo {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin: var(--spacing-xs) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fechas-objetivo b {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Botón de ver detalles */
+.contenedor-boton-feed {
+    margin-top: var(--spacing-md);
+}
+
+.botones-panel {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.botones-panel:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+/* Línea divisoria del objetivo */
+.linea-objetivo {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+    margin: var(--spacing-lg) 0;
+}
+
+/* Descripción */
+.contenedor-objetivo > p {
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: var(--spacing-md) 0;
+}
+
+/* Contenedor de progreso mejorado */
+.contenedor-progreso {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    background: rgba(251, 176, 3, 0.05);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-lg);
+    border-left: 4px solid var(--primary-color);
+}
+
+.contenedor-progreso p {
+    margin: 0;
+    font-weight: 500;
+    color: var(--secondary-color);
+    min-width: 50px;
+}
+
+/* Progress bar mejorada */
+#progreso, 
+progress {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+    background: var(--light-gray);
+    margin: 0;
+}
+
+progress::-webkit-progress-bar {
+    background: var(--light-gray);
+    border-radius: 4px;
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(90deg, var(--primary-color), #ff8000);
+    border-radius: 4px;
+}
+
+progress::-moz-progress-bar {
+    background: linear-gradient(90deg, var(--primary-color), #ff8000);
+    border-radius: 4px;
+}
+
+.contenedor-progreso label {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #main-content {
+        padding: var(--spacing-md);
+    }
+    
+    ul.lista {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-md) !important;
+    }
+    
+    .contenedor-objetivo {
+        padding: var(--spacing-lg);
+    }
+    
+    .titulo-del-objetivo {
+        font-size: 1.2rem;
+    }
+    
+    .contenedor-boton {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-md);
+    }
+    
+    .contenedor-leyendas {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .fechas-objetivo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo {
+        font-size: 1.5rem;
+    }
+    
+    .contenedor-objetivo {
+        padding: var(--spacing-md);
+    }
+    
+    .contenedor-progreso {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-sm);
+    }
+    
+    .contenedor-progreso label {
+        text-align: center;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estados de hover para interactividad */
+.contenedor-fechas:hover {
+    background: rgba(251, 176, 3, 0.1);
+    transition: background-color var(--transition-fast);
+}
+
+.contenedor-progreso:hover {
+    background: rgba(251, 176, 3, 0.1);
+    transition: background-color var(--transition-fast);
+}
+
+/* Efectos para impresión */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .contenedor-objetivo {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
+    
+    .lista {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }

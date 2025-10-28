@@ -1,53 +1,286 @@
-.contenedor-objetivo{
-    background-color: rgb(255, 227, 167);
-    border-radius: 10px;
-    border: 2px;
-    padding: 10px;
-    margin: 10px;
+/* Componente Objetivo con diseño de cards moderno */
+.contenedor-objetivo {
+    background: var(--white);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    padding: var(--spacing-xl);
+    transition: all var(--transition-medium);
+    animation: fadeInUp 0.4s ease-out;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
-.peso-p{
-    margin: 0px;
-}
-.linea-objetivo{
-    width: 100%;
-    border: 1px solid orange;
 
+.contenedor-objetivo:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
 }
-.botones-panel{
-    margin-top: 0px;
-}
-.contenedor-progreso{
+
+/* Header del objetivo */
+.cabecera-objetivo {
     display: flex;
-    align-items: center;
-    gap: 5px;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
 }
-.cabecera-objetivo{
-    display: flex;
-    align-items: center;
+
+.titulo-del-objetivo {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
-.titulo-del-objetivo{
-    width: 40%;
-}
-.fechas-objetivo{
-    width: 33%;
-}
-.contenedor-botones-panel{
-    display: flex;
-    width: 40%;
-    gap: 20px;
-}
+
+/* Contenedor de fechas mejorado */
 .contenedor-fechas {
-    display: flex;
-    
-    width: 40%;
+    background: var(--light-gray);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    transition: background-color var(--transition-fast);
 }
 
-.contenedor-boton-feed{
-    display: flex;
-    justify-content: end;
-    width: 30%;
-    
+.contenedor-fechas:hover {
+    background: rgba(251, 176, 3, 0.1);
 }
-.pdf-temp-style {
-    width: 50%;
-  }
+
+.fechas-objetivo {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    margin: var(--spacing-xs) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fechas-objetivo:last-child {
+    margin-bottom: 0;
+}
+
+.fechas-objetivo b {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Botón de ver detalles */
+.contenedor-boton-feed {
+    margin-top: auto;
+    padding-top: var(--spacing-md);
+}
+
+.botones-panel {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    font-size: 0.9rem;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.botones-panel:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+.botones-panel:active {
+    transform: translateY(0);
+}
+
+/* Línea divisoria del objetivo */
+.linea-objetivo {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+    margin: var(--spacing-lg) 0;
+}
+
+/* Descripción */
+.contenedor-objetivo > p {
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: var(--spacing-md) 0;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Contenedor de progreso mejorado */
+.contenedor-progreso {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    background: rgba(251, 176, 3, 0.05);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-lg);
+    border-left: 4px solid var(--primary-color);
+    transition: background-color var(--transition-fast);
+}
+
+.contenedor-progreso:hover {
+    background: rgba(251, 176, 3, 0.1);
+}
+
+.contenedor-progreso p {
+    margin: 0;
+    font-weight: 500;
+    color: var(--secondary-color);
+    min-width: 50px;
+    font-size: 0.9rem;
+}
+
+/* Progress bar mejorada */
+#progreso, 
+progress {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+    background: var(--light-gray);
+    margin: 0;
+}
+
+progress::-webkit-progress-bar {
+    background: var(--light-gray);
+    border-radius: 4px;
+}
+
+progress::-webkit-progress-value {
+    background: linear-gradient(90deg, var(--primary-color), #ff8000);
+    border-radius: 4px;
+}
+
+progress::-moz-progress-bar {
+    background: linear-gradient(90deg, var(--primary-color), #ff8000);
+    border-radius: 4px;
+}
+
+.contenedor-progreso label {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 50px;
+    text-align: right;
+    font-size: 0.9rem;
+}
+
+/* Badge de estado (opcional) */
+.contenedor-objetivo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary-color);
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+.contenedor-objetivo:hover::before {
+    opacity: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .contenedor-objetivo {
+        padding: var(--spacing-lg);
+    }
+    
+    .titulo-del-objetivo {
+        font-size: 1.2rem;
+        -webkit-line-clamp: 3;
+    }
+    
+    .fechas-objetivo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        font-size: 0.8rem;
+    }
+    
+    .fechas-objetivo b {
+        font-size: 0.85rem;
+    }
+    
+    .contenedor-objetivo > p {
+        -webkit-line-clamp: 4;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-objetivo {
+        padding: var(--spacing-md);
+    }
+    
+    .titulo-del-objetivo {
+        font-size: 1.1rem;
+    }
+    
+    .contenedor-progreso {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-sm);
+    }
+    
+    .contenedor-progreso label {
+        text-align: center;
+    }
+    
+    .botones-panel {
+        font-size: 0.85rem;
+        padding: var(--spacing-sm);
+    }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efectos para impresión */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .contenedor-objetivo {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        break-inside: avoid;
+        margin-bottom: 20px;
+    }
+    
+    .contenedor-objetivo:hover {
+        transform: none;
+    }
+    
+    .contenedor-objetivo::before {
+        display: none;
+    }
+}

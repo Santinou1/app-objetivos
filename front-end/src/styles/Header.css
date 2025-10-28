@@ -1,38 +1,97 @@
-/* src/components/Header.css */
-.cerrar-sesion{
+/* Navegación minimalista */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  z-index: 9999;
+  background: var(--white);
+  padding: var(--spacing-md) var(--spacing-xl);
+  box-shadow: var(--shadow-light);
+  color: var(--secondary-color);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  animation: slideDown 0.4s ease-out;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-xl);
+  width: 100%;
+  height: 100%;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  font-family: 'Josefin Sans', sans-serif;
+  color: var(--secondary-color);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-small);
+  transition: all var(--transition-medium);
+  display: block;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.nav-links li a:hover {
+  background: var(--light-gray);
+  color: var(--primary-color);
+}
+
+/* Cerrar sesión con estilo diferente */
+.cerrar-sesion {
   cursor: pointer;
 }
-.header {
-    position: fixed;
-    top: 0; /* Posición en la parte superior */
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: #fbb003;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    color: white;
-    border-radius: 0px 0px 10px 10px;
+
+.cerrar-sesion a {
+  background: var(--primary-color);
+  color: var(--white);
+  border-radius: var(--border-radius-small);
+}
+
+.cerrar-sesion a:hover {
+  background: var(--primary-hover);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-light);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    padding: var(--spacing-sm) var(--spacing-md);
   }
   
   .nav-links {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    margin: 0;
-    padding: 0;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
   }
   
   .nav-links li a {
-    font-family: 'Josefin Sans', sans-serif;
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    transition: background-color 0.8s ease;
-    border-radius: 5px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
   }
-  
-  .nav-links li a:hover {
-    background-color: #ff8000;
-  }
-  
+}

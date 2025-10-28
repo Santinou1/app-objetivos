@@ -1,24 +1,247 @@
-.conetendor-puntuacion-actualizar{
+/* Página de Actualizar Puntuación - Estilo Clásico */
+.conetendor-puntuacion-actualizar {
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 95vh;
+    align-items: center;
+    min-height: calc(100vh - 60px);
+    padding: 20px;
+    background: #f8f9fa;
 }
-.contenedor-actualizar{
-    width: 500px;
-}
-.titulo-puntuacion{
+
+.contenedor-actualizar {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    padding: 40px;
     width: 100%;
+    max-width: 600px;
+}
+
+/* Título principal */
+.titulo-puntuacion {
     text-align: center;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 30px 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #fbb003;
 }
-.input-puntuacion{
+
+/* Información del objetivo */
+.contenedor-actualizar h3 {
+    color: #2c3e50;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 15px 0;
+    padding: 10px 15px;
+    background: #fff3cd;
+    border-radius: 5px;
+    border-left: 4px solid #fbb003;
+}
+
+/* Labels clásicos */
+.descripcion-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c3e50;
+    margin: 25px 0 8px 0;
+    display: block;
+}
+
+/* Textarea clásica */
+.text-datos-actualizar-obj {
     width: 100%;
+    min-height: 120px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    transition: border-color 0.3s;
+    font-family: 'Josefin Sans', sans-serif;
+    line-height: 1.5;
+    resize: vertical;
+    background: white;
 }
-.actualizar-puntuacion-boton{
+
+.text-datos-actualizar-obj:focus {
+    border-color: #fbb003;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(251, 176, 3, 0.2);
+}
+
+.text-datos-actualizar-obj::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+/* Sección de puntuación */
+.contenedor-input {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid #e9ecef;
+}
+
+.contenedor-input h3 {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 20px 0 !important;
+    font-size: 1.2rem !important;
+    text-align: center;
+    color: #2c3e50 !important;
+}
+
+/* Slider clásico */
+.input-puntuacion {
     width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 15px 0;
+    cursor: pointer;
 }
-@media (max-width: 1280px){
-    .contenedor-actualizar{
-        max-width: 400px;
-    } 
+
+.input-puntuacion::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fbb003;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+
+.input-puntuacion::-webkit-slider-thumb:hover {
+    background: #e09a02;
+    transform: scale(1.1);
+}
+
+.input-puntuacion::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fbb003;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Indicador de porcentaje */
+.contenedor-input label:last-of-type {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    background: #fbb003;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 50px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón principal */
+.actualizar-puntuacion-boton {
+    width: 100%;
+    background: #fbb003;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.actualizar-puntuacion-boton:hover {
+    background: #e09a02;
+}
+
+.actualizar-puntuacion-boton:active {
+    background: #d18b02;
+}
+
+/* Mensaje de error */
+.contenedor-actualizar .error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+    border-left: 4px solid #dc3545;
+    font-weight: 500;
+}
+
+/* Estado de carga */
+.contenedor-actualizar.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.contenedor-actualizar.loading .actualizar-puntuacion-boton {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .conetendor-puntuacion-actualizar {
+        padding: 15px;
+        align-items: flex-start;
+    }
+    
+    .contenedor-actualizar {
+        max-width: 100%;
+        padding: 30px;
+        margin-top: 20px;
+    }
+    
+    .titulo-puntuacion {
+        font-size: 1.5rem;
+    }
+    
+    .contenedor-actualizar h3 {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+    
+    .text-datos-actualizar-obj {
+        min-height: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-actualizar {
+        padding: 20px;
+    }
+    
+    .titulo-puntuacion {
+        font-size: 1.3rem;
+    }
+    
+    .contenedor-input {
+        padding: 15px;
+    }
+    
+    .contenedor-input label:last-of-type {
+        position: static;
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
 }

@@ -1,11 +1,95 @@
-.contenedor-sinElementos{
-    background-color: rgb(206, 206, 206);
-    color: rgb(108, 108, 108);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
+/* Componente SinElementos mejorado */
+.contenedor-sinElementos {
+  background: linear-gradient(135deg, rgba(206, 206, 206, 0.1), rgba(158, 158, 158, 0.1));
+  color: var(--gray);
+  border: 2px dashed rgba(206, 206, 206, 0.5);
+  border-radius: var(--border-radius-large);
+  padding: var(--spacing-xxl);
+  margin: var(--spacing-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  animation: fadeInScale 0.6s ease-out;
 }
-.puntuacion{
-    padding: 2px 5px 2px 5px;
-    margin: 0px;
+
+.contenedor-sinElementos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(206, 206, 206, 0.1), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.contenedor-sinElementos h3 {
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+.contenedor-sinElementos p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.contenedor-sinElementos .icon {
+  font-size: 4rem;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.3;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.puntuacion {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  margin: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: var(--white);
+  border-radius: var(--border-radius-small);
+  font-weight: 600;
+  display: inline-block;
+  box-shadow: var(--shadow-light);
+  transition: all var(--transition-medium);
+}
+
+.puntuacion:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
 }

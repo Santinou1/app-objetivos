@@ -116,7 +116,6 @@ function NuevoUsuario(){
                         ))}
                     </select>
                 </div>
-                
                 <div className="contenedor-input">
                     <label>Correo electronico<b>**</b></label>
                     <input type="email" className="input-text" {...register('email',{autoComplete:"off"})}></input>
@@ -128,7 +127,7 @@ function NuevoUsuario(){
                 </div>
 
                 <div className="contenedor-input">
-                    <label>Confirmar contraseña</label>
+                    <label>Confirmar</label>
                     <input type="password" className="input-text" {...register('confirmar')}></input>
                 </div>
 

@@ -1,4 +1,5 @@
 import '../styles/Paginacion.css';
+
 function Paginacion({setCurrentPage, currentPage, nPages}){
     const next = ()=>{
         if(currentPage !== nPages) setCurrentPage(currentPage + 1)
@@ -6,14 +7,30 @@ function Paginacion({setCurrentPage, currentPage, nPages}){
     const prev = ()=>{
         if(currentPage > 1) setCurrentPage(currentPage - 1)
     }
+    
     return(
-        <div style={{display:'flex', justifyContent:'space-around'}}>
-            <h3 className='boton-paginacion' onClick={prev}>Atras</h3>
-            <h3 >
+        <div className="contenedor-paginacion">
+            <button 
+                className='boton-paginacion anterior' 
+                onClick={prev}
+                disabled={currentPage === 1}
+            >
+                Anterior
+            </button>
+            
+            <div className="info-pagina">
                 {currentPage} / {nPages}
-            </h3>
-            <h3 className='boton-paginacion siguiente' onClick={next}>Siguiente</h3>
+            </div>
+            
+            <button 
+                className='boton-paginacion siguiente' 
+                onClick={next}
+                disabled={currentPage === nPages}
+            >
+                Siguiente
+            </button>
         </div>
     );
 }
+
 export default Paginacion;

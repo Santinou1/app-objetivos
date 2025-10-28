@@ -64,10 +64,18 @@ function Panel(){
     }
 
     return (
-        <div>
-            {error && <p>Error : {error}</p>}
+        <div className="panel-container">
+            {error && (
+                <div className="error-container">
+                    <h3>⚠️ Error</h3>
+                    <p>{error}</p>
+                </div>
+            )}
             {isLoading ? (
-                <p>Cargando ...</p>
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p className="loading-text">Cargando...</p>
+                </div>
             ): (
                 <>
                     <div className='container-tipo-lista' onClick={cambiarTipoDeLista}>
@@ -98,17 +106,12 @@ function Panel(){
                                 nPages={nPages}    
                             />
                         </> ) : (
-                    <SinElementos elemento={tipoDeLista}/>
+                        <SinElementos elemento={tipoDeLista}/>
                     )}
                    
                 </>
-            )
-
-            }
-           
-            
+            )}
         </div>
-
     );
 }
 
