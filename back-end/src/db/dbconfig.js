@@ -1,22 +1,22 @@
 const mysql = require('mysql2');
 const myConnection = require('express-myconnection');
 
-/* module.exports = function (app) {
+module.exports = function (app) {
     app.use(myConnection( mysql, {
         host: '172.31.50.155',
         user: 'healthcheck',
         password: 'P1r1d3gm1@',
         database: 'objetivosDB'
     },'pool'));
-} */
+} 
 
-module.exports = function (app) {
+/*module.exports = function (app) {
     const dbConfig = {
         host: '127.0.0.1',
         user: 'root',
         password: '',
         database: 'newschema'
-    };
+    }; */
     
     app.use(myConnection( mysql, dbConfig, 'pool'));
     
@@ -35,4 +35,4 @@ module.exports = function (app) {
         }
         connection.end();
     });
-}
+
