@@ -77,14 +77,17 @@ async function generarPDF(req, res) {
         console.log('🚀 Lanzando Puppeteer...');
         // Generar PDF con Puppeteer
         browser = await puppeteer.launch({
-            headless: true,
+            headless: 'new',
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-dev-shm-usage',
                 '--disable-accelerated-2d-canvas',
-                '--disable-gpu'
-            ]
+                '--disable-gpu',
+                '--disable-software-rasterizer',
+                '--disable-extensions'
+            ],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined
         });
 
         console.log('📃 Creando página...');
