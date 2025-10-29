@@ -7,7 +7,15 @@ module.exports = function (app) {
         user: 'healthcheck',
         password: 'P1r1d3gm1@',
         database: 'objetivosDB'
-    };
+    }; 
+
+/* module.exports = function (app) {
+    const dbConfig = {
+        host: '127.0.0.1',
+        user: 'root',
+        password: '',
+        database: 'newSchema'
+    }; */
     
     app.use(myConnection( mysql, dbConfig, 'pool'));
     
