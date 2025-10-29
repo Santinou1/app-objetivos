@@ -12,4 +12,37 @@
 }
 .boton-pdf:hover {
     background-color: #ffbebe; /* Color cuando se pasa el mouse */
-  }
+}
+
+/* Estilos para mejorar la generación de PDF - Eliminar transparencias */
+.pdf-rendering .contenedor-objetivo {
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px #e0e0e0 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+.pdf-rendering .contenedor-fechas {
+    background: #f5f5f5 !important;
+}
+
+.pdf-rendering .contenedor-fechas:hover {
+    background: #fff4e0 !important;
+}
+
+.pdf-rendering .contenedor-progreso {
+    background: #fff8e6 !important;
+    border-left: 4px solid #fbb003 !important;
+}
+
+.pdf-rendering .contenedor-progreso:hover {
+    background: #fff4e0 !important;
+}
+
+.pdf-rendering progress::-webkit-progress-bar {
+    background: #f0f0f0 !important;
+}
+
+.pdf-rendering #progreso, 
+.pdf-rendering progress {
+    background: #f0f0f0 !important;
+}

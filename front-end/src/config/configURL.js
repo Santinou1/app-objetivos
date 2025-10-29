@@ -11,8 +11,8 @@ export function getApiUrl(){
       return url;
     } else if (hostname === 'objetivos.americagroupsrl.com' ) {
       // Estás en la máquina virtual
-      return 'http://objetivos.americagroupsrl.com:9000' || import.meta.env.VITE_API_URL;
+      return 'https://objetivos.americagroupsrl.com' || import.meta.env.VITE_API_URL;
     } else {
-      return import.meta.env.VITE_API_URL || 'http://objetivos.americagroupsrl.com:9000';    
+      return import.meta.env.VITE_API_URL || 'https://objetivos.americagroupsrl.com';    
     }
-}
+} 

@@ -150,7 +150,7 @@ function Feed(){
             {user && user.rol === 'admin' ? ( 
                 <div className="contenedor-boton">
                     <h3 style={{marginLeft:"17px"}}>Objetivos asignados:</h3>
-                    <BotonPdf nombreEmpleado={empleado?.nombre} />
+                    <BotonPdf nombreEmpleado={empleado?.nombre} idEmpleado={id} />
                 </div>):(
                 <></>
                 )
