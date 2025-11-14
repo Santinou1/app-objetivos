@@ -17,6 +17,23 @@ async function agregarPuntuacion(req, res){
             trimestre: req.body.trimestre
         }
 
+        // Validación del peso máximo permitido por trimestre
+        const totalTrimestres = 4; // Total de trimestres en el sistema
+        const maxPesoPorTrimestre = 100 / totalTrimestres; // 25% por trimestre
+        
+        if(puntuacion.valor > maxPesoPorTrimestre){
+            return res.status(400).send({
+                message: `El peso máximo permitido por trimestre es ${maxPesoPorTrimestre}%. Cada trimestre puede tener máximo ${maxPesoPorTrimestre}% del total.`
+            });
+        }
+
+        // Validación del valor entre 0 y 100
+        if(puntuacion.valor < 0 || puntuacion.valor > 100){
+            return res.status(400).send({
+                message: 'El valor debe estar entre 0 y 100.'
+            });
+        }
+
         console.log(puntuacion)
         const connection = await new Promise((resolve, reject)=>{
             req.getConnection((err, conn)=>{
