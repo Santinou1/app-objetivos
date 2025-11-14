@@ -18,6 +18,8 @@ function ActualizarPuntuacion(){
     const [redireccion, setRedireccion] = useState(null);
     
     const [error, setError] = useState('')
+    const [maxPeso, setMaxPeso] = useState(100);
+    const totalTrimestres = 4; // Total de trimestres en el sistema
    
     useEffect(()=>{
         axios.get(`${url}/api/objetivos/${objetivo}`)
@@ -44,11 +46,20 @@ function ActualizarPuntuacion(){
             .catch( error => {
                 setError(error.message);
             });
+        const maxPesoPorTrimestre = 100 / totalTrimestres;
+        setMaxPeso(maxPesoPorTrimestre);
     },[empleado]);
 
     const handleSubmit = async (e) =>{
         
         e.preventDefault();
+        
+        // Validación del peso máximo permitido
+        if(puntuacion > maxPeso){
+            setError(`El peso máximo permitido es ${maxPeso}%. Cada trimestre puede tener máximo ${maxPeso}% del total.`);
+            return;
+        }
+        
         try{
            
 
@@ -102,17 +113,18 @@ function ActualizarPuntuacion(){
                     />
                     <h3>Puntuar:</h3>
                     <div className="contenedor-input">
-                        <label htmlFor="slider" className="descripcion-label">Asigne el peso del objetivo: </label>
+                        <label htmlFor="slider" className="descripcion-label">Asigne el peso del objetivo (Máximo: {maxPeso}%): </label>
                         <input 
                             className='input-puntuacion'
                             type="range"
                             id="puntuacion"
                             min="0"
-                            max="100"
+                            max={maxPeso}
                             value={puntuacion}
                             onChange={(e)=>setPuntuacion(e.target.value)}
                         />
                         <label>{puntuacion}%</label>
+                        {error && <p style={{color: 'red', marginTop: '10px'}}>{error}</p>}
                         <button className='actualizar-puntuacion-boton' onClick={handleSubmit}>Agregar puntuacion</button>
                     </div>
                 </form>) :(<>
