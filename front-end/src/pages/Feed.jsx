@@ -4,14 +4,13 @@ import "../styles/Feed.css";
 import SinElementos from "../components/SinElementos";
 import { useUserContext} from "../UserProvider";
 import { useState, useEffect } from "react";
-import BarraPeso from "../components/BarraPeso";
 import { generarColorAleatorio } from "../components/generarColorAleatorio";
-import BarraDesempeno from "../components/BarraDesempeno";
-import { formateo } from "../components/formateo";
 import DesempenoTotal from "../components/DesempenoTotal";
-import BotonPdf from "../components/BotonPdf";
+import BotonPdfTrimestre from "../components/BotonPdfTrimestre";
 import { getApiUrl } from "../config/configURL";
 import Leyenda from "../components/Leyenda.jsx";
+import GraficoObjetivos from "../components/GraficoObjetivos";
+import TabsNavegacion from "../components/TabsNavegacion";
 import { useParams } from "react-router-dom";
 
 function Feed(){
@@ -24,16 +23,18 @@ function Feed(){
     const [empleado, setEmpleado] = useState(null);
     const [colores, setColores] = useState([]);
     const [puntuaciones, setPuntuaciones] = useState(null);
-    
+    const [tabActiva, setTabActiva] = useState('resumen');
 
     const handleMouseEnter = (index) => setHoveredIndex(index);
     const handleMouseLeave = () => setHoveredIndex(null);
 
-    const [formateado, setFormateado] = useState([]);
     const [cargando, setCargando] = useState(false)
-    const [cargando2,setCargando2 ] = useState(false);
 
     const [error, setError] = useState('');
+
+    const handleCambiarTab = (nuevaTab) => {
+        setTabActiva(nuevaTab);
+    };
     useEffect(()=>{
         axios.get(`${url}/api/empleados/${id}`)
             .then( response => {
@@ -57,7 +58,6 @@ function Feed(){
             .then(response => {
                 console.log(response)
                 setPuntuaciones(response.data);
-                setCargando2(true)
             })
             .catch( error => {
                 setError(error.message);
@@ -72,14 +72,6 @@ function Feed(){
         }
        
     },[objetivos]);
-    useEffect(()=>{
-        if(cargando2){
-            const nuevasPuntuaciones = formateo(puntuaciones);
-            setFormateado(nuevasPuntuaciones);
-            console.log(formateado)
-        }
-       
-    },[puntuaciones]);
     
 
     return(
@@ -100,71 +92,86 @@ function Feed(){
                 </>
             )}
            
-            {user && user.rol === 'admin'  && puntuaciones && objetivos ? (<>    
-                <h3 style={{marginLeft:"17px"}}>Barra de peso de los objetivos:</h3>
-                
-                <div className="contenedor-barra">
-                   
-                    <BarraPeso 
-                        objetivos={objetivos} 
-                        colores={colores} 
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        hoveredIndex={hoveredIndex}
+            {user && user.rol === 'admin' && puntuaciones && objetivos ? (
+                <>
+                    <TabsNavegacion 
+                        tabActiva={tabActiva} 
+                        onCambiarTab={handleCambiarTab} 
                     />
-                </div>
-                
-                <h3 style={{marginLeft:"17px"}}>Desempeño:</h3>
-                <div className="contenedor-barra">
-                   
-                    <BarraDesempeno  
-                    formateado={puntuaciones} 
-                    colores={colores} 
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    hoveredIndex={hoveredIndex}/>
                     
-                </div>
-                <DesempenoTotal objetivos={puntuaciones} />
-                <div className="contenedor-leyendas">
-                    <Leyenda 
-                        tituloLeyenda={'Barra de peso de los objetivos'}
-                        objetivos={objetivos} 
-                        colores={colores} 
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        hoveredIndex={hoveredIndex} 
-                    />
-                    <Leyenda 
-                        tituloLeyenda={'Barra de desempeño'}
-                        objetivos={puntuaciones} 
-                        colores={colores} 
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        hoveredIndex={hoveredIndex} 
-                    />
-                </div>
-            </>):(
-                <></>
+                    {tabActiva === 'resumen' && (
+                        <div className="tab-content">
+                            <DesempenoTotal objetivos={puntuaciones} />
+                            
+                            <div className="contenedor-leyendas">
+                                <Leyenda 
+                                    tituloLeyenda={'Barra de peso de los objetivos'}
+                                    objetivos={objetivos} 
+                                    colores={colores} 
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                    hoveredIndex={hoveredIndex} 
+                                />
+                                <Leyenda 
+                                    tituloLeyenda={'Barra de desempeño'}
+                                    objetivos={puntuaciones} 
+                                    colores={colores} 
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                    hoveredIndex={hoveredIndex} 
+                                />
+                            </div>
+                        </div>
+                    )}
+                    
+                    {tabActiva === 'graficos' && (
+                        <div className="tab-content">
+                            <DesempenoTotal objetivos={puntuaciones} />
+                            
+                            <GraficoObjetivos 
+                                objetivos={objetivos}
+                                puntuaciones={puntuaciones}
+                                colores={colores}
+                            />
+                        </div>
+                    )}
+                    
+                    {tabActiva === 'detalles' && (
+                        <div className="tab-content">
+                            <div className="contenedor-boton">
+                                <h3 style={{marginLeft:"17px"}}>Objetivos asignados:</h3>
+                                <BotonPdfTrimestre nombreEmpleado={empleado?.nombre} idEmpleado={id} />
+                            </div>
+                            
+                            {objetivos && objetivos.length !== 0 ?  (
+                                <ul className="lista">
+                                    {objetivos.map((objetivos,index)=>(
+                                        <li key={index}>
+                                            <Objetivo objetivo={objetivos} empleado={id} />
+                                        </li>
+                                ))}
+                                </ul>
+                            ) : (<SinElementos elemento={'objetivos asignados.'}/>)}
+                        </div>
+                    )}
+                </>
+            ) : (
+                <>
+                    {/* Vista para empleados no admin */}
+                    {objetivos && objetivos.length !== 0 ?  (
+                        <>
+                            <h3 style={{marginLeft:"17px", marginTop:"20px"}}>Tus objetivos asignados:</h3>
+                            <ul className="lista">
+                                {objetivos.map((objetivos,index)=>(
+                                    <li key={index}>
+                                        <Objetivo objetivo={objetivos} empleado={id} />
+                                    </li>
+                            ))}
+                            </ul>
+                        </>
+                    ) : (<SinElementos elemento={'objetivos asignados.'}/>)}
+                </>
             )}
-            {user && user.rol === 'admin' ? ( 
-                <div className="contenedor-boton">
-                    <h3 style={{marginLeft:"17px"}}>Objetivos asignados:</h3>
-                    <BotonPdf nombreEmpleado={empleado?.nombre} idEmpleado={id} />
-                </div>):(
-                <></>
-                )
-            }
-           
-            {objetivos && objetivos.length !== 0 ?  (
-                <ul className="lista">
-                    {objetivos.map((objetivos,index)=>(
-                        <li key={index}>
-                            <Objetivo objetivo={objetivos} empleado={id} />
-                        </li>
-                ))}
-                </ul>
-            ) : (<SinElementos elemento={'objetivos asignados.'}/>)}
             
         </div>
 

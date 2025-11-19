@@ -1,25 +1,33 @@
 import '../styles/Leyenda.css';
-function Leyenda({colores, objetivos,hoveredIndex, onMouseEnter, onMouseLeave, tituloLeyenda}){
+
+function Leyenda({colores, objetivos, hoveredIndex, onMouseEnter, onMouseLeave, tituloLeyenda}){
     return(
         <div className="contenedor-leyenda">
-            <h3>Leyenda de {tituloLeyenda}</h3>
+            <h3>{tituloLeyenda}</h3>
             {objetivos.map((item, index) => {
                 const colorDeObjetivo = colores[index];
                 const objetivo = item.titulo;
-                const porcentaje = tituloLeyenda === 'Barra de peso de los objetivos' ? item.peso : item.despeno
+                const porcentaje = tituloLeyenda === 'Barra de peso de los objetivos' ? (item.peso || 0) : (item.despeno || 0);
+                const porcentajeFormateado = tituloLeyenda === 'Barra de desempeño' 
+                    ? `${Number(porcentaje).toFixed(2)}%` 
+                    : `${porcentaje}%`;
+                
                 return(
                     <p  
                         key={index}
-                        onMouseEnter={() => onMouseEnter(index)} // Usar la función del padre
-                        onMouseLeave={onMouseLeave} // Usar la función del padre
-                        style={{boxShadow: hoveredIndex === index ? `0px 1px 5px ${colorDeObjetivo}, 0px 1px 10px ${colorDeObjetivo}` : undefined}}
+                        onMouseEnter={() => onMouseEnter(index)}
+                        onMouseLeave={onMouseLeave}
+                        style={{
+                            boxShadow: hoveredIndex === index 
+                                ? `0px 2px 8px ${colorDeObjetivo}40, 0px 4px 16px ${colorDeObjetivo}20` 
+                                : undefined
+                        }}
                     >
-                        <span style={{color:colorDeObjetivo, fontSize:'15px'}}>⦿</span> 
-                        {`${objetivo}:`}<b>{ tituloLeyenda === 'Barra de desempeño' ? ` ${porcentaje.toFixed(2)}%`: ` ${porcentaje}%`}</b> 
+                        <span style={{color: colorDeObjetivo}}>⦿</span> 
+                        <span className="objetivo-texto">{objetivo}:</span>
+                        <b>{porcentajeFormateado}</b> 
                     </p>
-                )
-         
-        
+                );
             })}
         </div>
     );

@@ -18,8 +18,7 @@ function ActualizarPuntuacion(){
     const [redireccion, setRedireccion] = useState(null);
     
     const [error, setError] = useState('')
-    const [maxPeso, setMaxPeso] = useState(100);
-    const totalTrimestres = 4; // Total de trimestres en el sistema
+    const maxPeso = 100; // Límite máximo de peso por trimestre
    
     useEffect(()=>{
         axios.get(`${url}/api/objetivos/${objetivo}`)
@@ -46,8 +45,6 @@ function ActualizarPuntuacion(){
             .catch( error => {
                 setError(error.message);
             });
-        const maxPesoPorTrimestre = 100 / totalTrimestres;
-        setMaxPeso(maxPesoPorTrimestre);
     },[empleado]);
 
     const handleSubmit = async (e) =>{
@@ -56,7 +53,7 @@ function ActualizarPuntuacion(){
         
         // Validación del peso máximo permitido
         if(puntuacion > maxPeso){
-            setError(`El peso máximo permitido es ${maxPeso}%. Cada trimestre puede tener máximo ${maxPeso}% del total.`);
+            setError(`El peso máximo permitido por trimestre es ${maxPeso}%.`);
             return;
         }
         

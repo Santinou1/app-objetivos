@@ -1,0 +1,78 @@
+.contenedor-pdf-trimestre {
+    position: relative;
+    display: inline-block;
+}
+
+.boton-pdf {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: #fbb003;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.boton-pdf:hover {
+    background: #e09a02;
+}
+
+.label-pdf {
+    margin: 0;
+    font-size: 14px;
+}
+
+.flecha-dropdown {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.opciones-pdf {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.opciones-pdf button {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background: white;
+    color: #333;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.opciones-pdf button:last-child {
+    border-bottom: none;
+}
+
+.opciones-pdf button:hover {
+    background: #f5f5f5;
+}
+
+.opciones-pdf button:active {
+    background: #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .opciones-pdf {
+        min-width: 200px;
+    }
+}

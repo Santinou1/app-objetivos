@@ -3,6 +3,7 @@ const router = express.Router();
 const {format, parseISO} = require('date-fns'); 
 
 router.get('/', obtenerObjetivos);
+router.get('/buscar/:termino', buscarObjetivosPorTitulo);
 router.get('/ultimo',obtenerUltimoObjetivo );
 router.get('/:id', obtenerObjetivo);
 router.post('/', agregarObjetivo);
@@ -211,6 +212,52 @@ async function obtenerObjetivo(req, res) {
         res.send(dataFormateado[0])
     } catch (err) {
         res.send(err);
+    }
+}
+
+async function buscarObjetivosPorTitulo(req, res) {
+    try {
+        const termino = req.params.termino;
+        
+        if (!termino || termino.trim() === '') {
+            return res.status(400).send({ message: 'Término de búsqueda requerido' });
+        }
+
+        const connection = await new Promise((resolve, reject) => {
+            req.getConnection((err, conn) => {
+                if (err) {
+                    console.error("Error al conectar en la base de datos:", err);
+                    reject(err);
+                } else {
+                    console.log('Conexión exitosa');
+                    resolve(conn);
+                }
+            });
+        });
+
+        // Buscar objetivos que contengan el término en el título (case insensitive)
+        const query = 'SELECT * FROM Objetivo WHERE titulo LIKE ? ORDER BY idObjetivo DESC';
+        const searchTerm = `%${termino}%`;
+
+        const results = await new Promise((resolve, reject) => {
+            connection.query(query, [searchTerm], (err, results) => {
+                if (err) {
+                    console.error("Error en la consulta:", err);
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+
+        console.log(`Búsqueda: "${termino}" - Resultados encontrados: ${results.length}`);
+        
+        const dataFormateado = formatearFecha(results);
+        res.status(200).json(dataFormateado);
+        
+    } catch (err) {
+        console.error("Error en búsqueda:", err);
+        res.status(500).send({ message: 'Error interno del servidor', error: err.message });
     }
 }
 

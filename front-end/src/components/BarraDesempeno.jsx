@@ -5,7 +5,7 @@ function BarraDesempeno({ formateado, colores,hoveredIndex, onMouseEnter, onMous
   useEffect(() => {
     // Calcular el total cuando 'formateado' cambie
     const nuevoTotal = formateado.reduce((acumulador, item) => {
-      return acumulador + item.despeno;
+      return acumulador + (item.desempenoPonderado || item.despeno || 0);
     }, 0);
     
     setTotal(nuevoTotal);
@@ -15,7 +15,7 @@ function BarraDesempeno({ formateado, colores,hoveredIndex, onMouseEnter, onMous
         {formateado.map((item, index) => {
           const porcentajePeso = item.peso;
          
-          const porcentajeTotal = item.despeno; // Calcular el porcentaje total considerando el peso
+          const porcentajeTotal = item.desempenoPonderado || item.despeno || 0; // Calcular el porcentaje total considerando el peso
           const color = colores[index]; // Usar el color correspondiente
           
           

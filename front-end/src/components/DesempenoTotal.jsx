@@ -6,16 +6,21 @@ function DesempenoTotal({objetivos}){
 
 
   useEffect(() => {
-    // Calcular el total cuando 'formateado' cambie
-    const nuevoTotal = objetivos.reduce((acumulador, item) => {
-      return acumulador + item.despeno;
+    if (!objetivos || !Array.isArray(objetivos)) {
+      setTotal(0);
+      return;
+    }
+    
+    // Cálculo: suma total de todos los promedios de puntuaciones
+    const sumaPuntuaciones = objetivos.reduce((acumulador, item) => {
+      return acumulador + Number(item.despeno || 0);
     }, 0);
     
-    setTotal(nuevoTotal);
+    setTotal(sumaPuntuaciones);
   }, [objetivos]); 
     return(
         <>
-            <h3 style={{marginLeft:"17px"}}>Desempeño total: {total.toFixed(2)}%</h3>
+            <h3 style={{marginLeft:"17px"}}>Desempeño total: {Number(total || 0).toFixed(2)}%</h3>
            
         </>
     );

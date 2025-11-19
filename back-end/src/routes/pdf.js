@@ -9,8 +9,11 @@ async function generarPDF(req, res) {
     let browser = null;
     try {
         console.log('📄 Iniciando generación de PDF...');
-        const { idEmpleado, nombreEmpleado } = req.body;
+        const { idEmpleado, nombreEmpleado, trimestre } = req.body;
         console.log(`👤 Empleado: ${nombreEmpleado} (ID: ${idEmpleado})`);
+        if (trimestre) {
+            console.log(`📅 Trimestre específico: ${trimestre}`);
+        }
 
         if (!idEmpleado || !nombreEmpleado) {
             return res.status(400).json({ message: "ID de empleado y nombre son obligatorios" });
@@ -51,28 +54,41 @@ async function generarPDF(req, res) {
         }));
 
         console.log('📊 Consultando puntuaciones...');
-        // Obtener puntuaciones para cada objetivo
+        // Obtener puntuaciones según el trimestre especificado
         for (let objetivo of objetivosFormateados) {
-            const queryPuntuacion = `
-                SELECT * FROM Puntuacion 
-                WHERE objetivo = ? 
-                ORDER BY fechaPuntuacion DESC 
-                LIMIT 1;
-            `;
+            let queryPuntuacion, queryParams;
+            
+            if (trimestre) {
+                // Consulta para trimestre específico
+                queryPuntuacion = `
+                    SELECT COALESCE(valor, 0) as promedio
+                    FROM Puntuacion 
+                    WHERE objetivo = ? AND trimestre = ?
+                `;
+                queryParams = [objetivo.idObjetivoEmpleado, trimestre];
+            } else {
+                // Consulta para promedio de todos los trimestres
+                queryPuntuacion = `
+                    SELECT (COALESCE(SUM(valor), 0) / 4) as promedio
+                    FROM Puntuacion 
+                    WHERE objetivo = ? AND trimestre > 0
+                `;
+                queryParams = [objetivo.idObjetivoEmpleado];
+            }
             
             const puntuacion = await new Promise((resolve, reject) => {
-                connection.query(queryPuntuacion, [objetivo.idObjetivoEmpleado], (err, results) => {
+                connection.query(queryPuntuacion, queryParams, (err, results) => {
                     if (err) reject(err);
-                    else resolve(results[0] || { valor: 0 });
+                    else resolve(results[0] || { promedio: 0 });
                 });
             });
             
-            objetivo.puntuacion = puntuacion.valor;
+            objetivo.puntuacion = puntuacion.promedio || 0;
         }
 
         console.log('🎨 Generando HTML...');
         // Generar HTML con los datos
-        const htmlContent = generarHTMLTemplate(nombreEmpleado, objetivosFormateados);
+        const htmlContent = generarHTMLTemplate(nombreEmpleado, objetivosFormateados, trimestre);
 
         console.log('🚀 Lanzando Puppeteer...');
         // Generar PDF con Puppeteer
@@ -127,10 +143,12 @@ async function generarPDF(req, res) {
     }
 }
 
-function generarHTMLTemplate(nombreEmpleado, objetivos) {
+function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
     // Calcular peso total y desempeño
     const pesoTotal = objetivos.reduce((sum, obj) => sum + obj.peso, 0);
-    const desempenoTotal = objetivos.reduce((sum, obj) => sum + (obj.peso * obj.puntuacion / 100), 0);
+    // Cálculo del desempeño total: suma total de todas las puntuaciones
+    const sumaPuntuaciones = objetivos.reduce((sum, obj) => sum + Number(obj.puntuacion || 0), 0);
+    const desempenoTotal = trimestre ? sumaPuntuaciones / objetivos.length : sumaPuntuaciones;
     
     // Generar colores aleatorios para cada objetivo
     const colores = objetivos.map(() => {
@@ -264,7 +282,7 @@ function generarHTMLTemplate(nombreEmpleado, objetivos) {
             justify-content: center;
             align-items: center;
             border-radius: 0 10px 10px 0;
-            margin-left: -5px;
+            margin-left: -5px;  
             color: #666;
             font-size: 11px;
         }
@@ -283,37 +301,103 @@ function generarHTMLTemplate(nombreEmpleado, objetivos) {
         /* Leyendas */
         .contenedor-leyendas {
             display: flex;
-            gap: 20px;
+            gap: 24px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .contenedor-leyenda {
-            background-color: rgb(171, 171, 171);
-            color: rgb(0, 0, 0);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 24px;
             flex: 1;
-            min-width: 300px;
-            padding: 15px;
-            border-radius: 10px;
+            min-width: 320px;
+            max-width: 450px;
+            box-shadow: 
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contenedor-leyenda::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #fbb003, #ff8000);
+            border-radius: 16px 16px 0 0;
         }
 
         .contenedor-leyenda h3 {
-            margin-bottom: 15px;
+            color: #2d3748;
             font-size: 1.1rem;
-            color: #2c3e50;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+            text-align: center;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .contenedor-leyenda h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #fbb003, #ff8000);
+            border-radius: 1px;
         }
 
         .leyenda-item {
-            margin: 10px 0;
-            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin: 0 0 12px 0;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .leyenda-item:last-child {
+            margin-bottom: 0;
         }
 
         .leyenda-bullet {
             font-size: 18px;
-            line-height: 1;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        }
+
+        .leyenda-item span:not(.leyenda-bullet) {
+            flex: 1;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .leyenda-item b {
+            color: #fbb003;
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Fallback para PDF sin gradientes de texto */
+        @media print {
+            .leyenda-item b {
+                color: #fbb003 !important;
+                background: none !important;
+                -webkit-text-fill-color: #fbb003 !important;
+            }
         }
 
         .objetivos-grid {
@@ -422,87 +506,47 @@ function generarHTMLTemplate(nombreEmpleado, objetivos) {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Reporte de Objetivos</h1>
+            <h1>Reporte de Objetivos${trimestre ? ` - Trimestre ${trimestre}` : ' - Completo'}</h1>
             <p>${nombreEmpleado}</p>
             <p style="font-size: 0.9rem; margin-top: 10px;">Generado el ${format(new Date(), 'dd/MM/yyyy')}</p>
         </div>
 
         <div class="leyenda-section">
-            <h2>Barra de Peso de los Objetivos</h2>
-            <div class="barra-visual">
-                ${objetivos.map((obj, index) => {
-                    const porcentaje = obj.peso;
-                    const color = colores[index];
-                    const isLast = index === objetivos.length - 1;
-                    return `
-                        <div class="barra-segmento" style="
-                            width: ${porcentaje * 1.05}%;
-                            background-color: ${color};
-                            border-color: ${color};
-                            border-radius: ${isLast ? '0 10px 10px 0' : '0'};
-                            z-index: ${objetivos.length - index};
-                        ">
-                            ${porcentaje !== 0 ? `(${porcentaje}%)` : ''}
-                        </div>
-                    `;
-                }).join('')}
-                ${pesoTotal < 100 ? `
-                    <div class="barra-vacia">
-                        Espacio vacío (${(100 - pesoTotal)}%)
-                    </div>
-                ` : ''}
-            </div>
-        </div>
-
-        <div class="leyenda-section">
-            <h2>Barra de Desempeño</h2>
-            <div class="barra-visual">
-                ${objetivos.map((obj, index) => {
-                    const desempeno = (obj.peso * obj.puntuacion / 100);
-                    const color = colores[index];
-                    const isLast = index === objetivos.length - 1;
-                    return `
-                        <div class="barra-segmento" style="
-                            width: ${desempeno}%;
-                            background-color: ${color};
-                            border-color: ${color};
-                            border-radius: ${isLast ? '0 10px 10px 0' : '0'};
-                            z-index: ${objetivos.length - index};
-                        ">
-                            ${desempeno > 5 ? `${desempeno.toFixed(2)}%` : ''}
-                        </div>
-                    `;
-                }).join('')}
-            </div>
-            <div class="desempeno-total">
-                Desempeño Total: ${desempenoTotal.toFixed(2)}%
-            </div>
+            <h2>Desempeño Total: ${desempenoTotal.toFixed(2)}%</h2>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                ${trimestre 
+                    ? `Calculado como: Promedio de puntuaciones del trimestre ${trimestre} (${sumaPuntuaciones.toFixed(2)}% / ${objetivos.length} objetivos)`
+                    : `Calculado como: Suma total de todos los promedios de puntuaciones (${sumaPuntuaciones.toFixed(2)}%)`
+                }
+            </p>
         </div>
 
         <div class="contenedor-leyendas">
             <div class="contenedor-leyenda">
-                <h3>Leyenda de Barra de peso de los objetivos</h3>
+                <h3>Barra de peso de los objetivos</h3>
                 ${objetivos.map((obj, index) => {
                     const color = colores[index];
                     const porcentaje = obj.peso;
                     return `
                         <div class="leyenda-item">
                             <span class="leyenda-bullet" style="color: ${color};">⦿</span>
-                            <span>${obj.titulo}: <b>${porcentaje}%</b></span>
+                            <span>${obj.titulo}:</span>
+                            <b>${porcentaje}%</b>
                         </div>
                     `;
                 }).join('')}
             </div>
 
             <div class="contenedor-leyenda">
-                <h3>Leyenda de Barra de desempeño</h3>
+                <h3>Barra de desempeño</h3>
                 ${objetivos.map((obj, index) => {
                     const color = colores[index];
-                    const desempeno = (obj.peso * obj.puntuacion / 100);
+                    const promedioPuntuacion = Number(obj.puntuacion || 0); // Promedio de los 4 trimestres
                     return `
                         <div class="leyenda-item">
                             <span class="leyenda-bullet" style="color: ${color};">⦿</span>
-                            <span>${obj.titulo}: <b>${desempeno.toFixed(2)}%</b></span>
+                            <span>${obj.titulo}:</span>
+                            <b>${promedioPuntuacion.toFixed(2)}%</b>
                         </div>
                     `;
                 }).join('')}

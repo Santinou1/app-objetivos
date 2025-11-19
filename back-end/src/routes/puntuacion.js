@@ -18,12 +18,11 @@ async function agregarPuntuacion(req, res){
         }
 
         // Validación del peso máximo permitido por trimestre
-        const totalTrimestres = 4; // Total de trimestres en el sistema
-        const maxPesoPorTrimestre = 100 / totalTrimestres; // 25% por trimestre
+        const maxPesoPorTrimestre = 100; // 100% por trimestre
         
         if(puntuacion.valor > maxPesoPorTrimestre){
             return res.status(400).send({
-                message: `El peso máximo permitido por trimestre es ${maxPesoPorTrimestre}%. Cada trimestre puede tener máximo ${maxPesoPorTrimestre}% del total.`
+                message: `El peso máximo permitido por trimestre es ${maxPesoPorTrimestre}%.`
             });
         }
 
@@ -75,20 +74,20 @@ async function obtenerPuntuacionBarra(req,res) {
         const query = `SELECT 
             oe.idObjetivoEmpleado, 
             o.titulo, 
-            AVG(p.valor) AS promedioPuntuacion, 
+            (SUM(p.valor) / 4) AS promedioPuntuacion, 
             o.peso, 
-            (o.peso * AVG(p.valor) / 100) AS despeno
+            (SUM(p.valor) / 4) AS despeno,
+            (o.peso * SUM(p.valor) / 4 / 100) AS desempenoPonderado
             FROM 
                 ObjetivoEmpleado oe
             JOIN 
                 Empleado e ON oe.empleado = e.idEmpleado
             JOIN 
                 Objetivo o ON oe.objetivo = o.idObjetivo
-            JOIN 
-                Puntuacion p ON oe.idObjetivoEmpleado = p.objetivo
+            LEFT JOIN 
+                Puntuacion p ON oe.idObjetivoEmpleado = p.objetivo AND p.trimestre > 0
             WHERE 
                 e.idEmpleado = ?
-                AND p.trimestre > 0
             GROUP BY    oe.idObjetivoEmpleado, o.titulo, o.peso
             ORDER BY idOBjetivoEmpleado ASC;`
         const results = await new Promise((resolve, reject)=>{

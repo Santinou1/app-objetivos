@@ -1,0 +1,180 @@
+/* Contenedor principal de las pestañas */
+.tabs-navegacion {
+    position: relative;
+    margin: 24px 0;
+    background: white;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Container de las pestañas */
+.tabs-container {
+    display: flex;
+    gap: 4px;
+    position: relative;
+}
+
+/* Botón de pestaña */
+.tab-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #6b7280;
+    position: relative;
+    z-index: 2;
+}
+
+.tab-button:hover {
+    background: rgba(251, 176, 3, 0.1);
+    color: #374151;
+    transform: translateY(-1px);
+}
+
+/* Pestaña activa */
+.tab-button.active {
+    background: linear-gradient(135deg, #fbb003, #ff8000);
+    color: white;
+    box-shadow: 
+        0 4px 6px -1px rgba(251, 176, 3, 0.3),
+        0 2px 4px -1px rgba(251, 176, 3, 0.2);
+    transform: translateY(-2px);
+}
+
+.tab-button.active:hover {
+    background: linear-gradient(135deg, #e09a02, #e06f00);
+    transform: translateY(-2px);
+}
+
+/* Iconos de las pestañas */
+.tab-icon {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-label {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Indicador de pestaña activa */
+.tab-indicator {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #fbb003, #ff8000);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.tabs-navegacion:has(.tab-button.active) .tab-indicator {
+    opacity: 1;
+}
+
+/* Animaciones de entrada */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tabs-navegacion {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Efectos de focus para accesibilidad */
+.tab-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(251, 176, 3, 0.3);
+}
+
+.tab-button.active:focus {
+    box-shadow: 
+        0 4px 6px -1px rgba(251, 176, 3, 0.3),
+        0 2px 4px -1px rgba(251, 176, 3, 0.2),
+        0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tabs-navegacion {
+        margin: 16px 0;
+        padding: 6px;
+    }
+
+    .tab-button {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        gap: 6px;
+    }
+
+    .tab-icon {
+        font-size: 1.1rem;
+    }
+
+    .tab-label {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .tab-button {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+    }
+
+    .tab-label {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-button {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 6px;
+    }
+
+    .tab-icon {
+        font-size: 1.2rem;
+    }
+
+    .tab-label {
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+}
+
+/* Estados de carga */
+.tabs-navegacion.loading .tab-button {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.tabs-navegacion.loading .tab-button:hover {
+    transform: none;
+    background: none;
+}

@@ -1,0 +1,304 @@
+/* Contenedor principal del gráfico */
+.grafico-objetivos-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 32px;
+    margin: 32px 0;
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.grafico-objetivos-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #fbb003, #ff8000, #fbb003);
+    border-radius: 20px 20px 0 0;
+}
+
+/* Header del gráfico */
+.grafico-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.grafico-header h2 {
+    color: #2d3748;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    background: linear-gradient(135deg, #fbb003, #ff8000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.grafico-subtitle {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Grid de tarjetas */
+.grafico-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* Tarjeta individual */
+.grafico-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.grafico-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.grafico-card-inner {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+/* Círculo de progreso */
+.progress-ring-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    transition: all 0.3s ease;
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.progress-percentage {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    line-height: 1;
+}
+
+.progress-label {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Información del objetivo */
+.grafico-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.objetivo-titulo-grafico {
+    color: #2d3748;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+/* Estadísticas */
+.grafico-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+    background: #f3f4f6;
+    transform: translateX(4px);
+}
+
+.stat-item.highlight {
+    background: linear-gradient(135deg, #fff8e6 0%, #fff3d6 100%);
+    border: 1px solid rgba(251, 176, 3, 0.2);
+}
+
+.stat-item.highlight:hover {
+    background: linear-gradient(135deg, #fff3d6 0%, #ffeec6 100%);
+}
+
+.stat-icon {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 0.95rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* Barra de progreso lineal */
+.linear-progress {
+    margin-top: 4px;
+}
+
+.linear-progress-track {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.linear-progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grafico-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.grafico-card:nth-child(1) { animation-delay: 0.1s; }
+.grafico-card:nth-child(2) { animation-delay: 0.2s; }
+.grafico-card:nth-child(3) { animation-delay: 0.3s; }
+.grafico-card:nth-child(4) { animation-delay: 0.4s; }
+.grafico-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .grafico-grid {
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .grafico-objetivos-container {
+        padding: 24px 16px;
+    }
+
+    .grafico-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .grafico-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .grafico-card-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .progress-ring-container {
+        margin-bottom: 8px;
+    }
+
+    .objetivo-titulo-grafico {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .grafico-card {
+        padding: 16px;
+    }
+
+    .stat-item {
+        padding: 8px 10px;
+    }
+
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1rem;
+    }
+
+    .progress-percentage {
+        font-size: 1.3rem;
+    }
+}

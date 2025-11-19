@@ -62,10 +62,11 @@
 /* Leyendas */
 .contenedor-leyendas {
     display: flex;
-    gap: var(--spacing-lg);
+    gap: 24px;
     justify-content: center;
     flex-wrap: wrap;
-    margin: var(--spacing-xl) 0;
+    margin: 32px 0;
+    padding: 0 16px;
 }
 
 /* Lista de objetivos como grilla definida */
@@ -324,9 +325,54 @@ progress::-moz-progress-bar {
     transition: background-color var(--transition-fast);
 }
 
+/* Contenido de pestañas */
+.tab-content {
+    animation: fadeInContent 0.4s ease-out;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Transiciones suaves para el cambio de contenido */
+.contenedor-leyendas,
+.grafico-objetivos-container {
+    transition: all 0.3s ease;
+}
+
+/* Estilos específicos para la pestaña de detalles */
+.tab-content .contenedor-boton {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.tab-content .contenedor-boton h3 {
+    margin-left: 0 !important;
+    color: #2d3748;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
 /* Efectos para impresión */
 @media print {
     .no-print {
+        display: none !important;
+    }
+    
+    .tabs-navegacion {
         display: none !important;
     }
     
