@@ -1,0 +1,30 @@
+.watermark-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    opacity: 0.08;
+    z-index: 9999;
+    pointer-events: none;
+    width: 600px;
+    height: auto;
+}
+
+.watermark-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .watermark-container {
+        width: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .watermark-container {
+        width: 300px;
+    }
+}

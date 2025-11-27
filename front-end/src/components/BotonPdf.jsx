@@ -1,11 +1,14 @@
 import '../styles/BotonPdf.css';
 import axios from 'axios';
 import { getApiUrl } from '../config/configURL';
+import { useState } from 'react';
 
 function BotonPdf({nombreEmpleado, idEmpleado}){
     const url = getApiUrl();
+    const [cargando, setCargando] = useState(false);
     
     const generarPdf = async () => {
+        setCargando(true);
         try {
             console.log('📄 Iniciando generación de PDF...');
             console.log('Datos:', { idEmpleado, nombreEmpleado });
@@ -40,6 +43,7 @@ function BotonPdf({nombreEmpleado, idEmpleado}){
             
             console.log('✅ PDF descargado exitosamente');
         } catch (error) {
+            setCargando(false);
             console.error('❌ Error al generar el PDF:', error);
             console.error('Detalles del error:', error.response?.data);
             
@@ -51,10 +55,12 @@ function BotonPdf({nombreEmpleado, idEmpleado}){
             } else {
                 alert(`Hubo un error al generar el PDF: ${error.message}`);
             }
+        } finally {
+            setCargando(false);
         }
     }
     return(
-        <div className="boton-pdf no-print" onClick={generarPdf}>
+        <div className={`boton-pdf no-print ${cargando ? 'cargando' : ''}`} onClick={!cargando ? generarPdf : undefined}>
             <svg
                 width="32px"
                 height="32px"
@@ -71,7 +77,14 @@ function BotonPdf({nombreEmpleado, idEmpleado}){
                     ></path>
                 </g>
             </svg>
-            <p className='label-pdf'>Generar pdf</p>
+            {cargando ? (
+                <>
+                    <div className="spinner-pdf"></div>
+                    <p className='label-pdf'>Generando...</p>
+                </>
+            ) : (
+                <p className='label-pdf'>Generar pdf</p>
+            )}
         </div>
     );
 }

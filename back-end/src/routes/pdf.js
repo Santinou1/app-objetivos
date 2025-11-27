@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const puppeteer = require('puppeteer');
 const {format} = require('date-fns');
+const fs = require('fs');
+const path = require('path');
 
 router.post('/generar-pdf', generarPDF);
 
@@ -158,6 +160,16 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
         return `rgb(${r}, ${g}, ${b})`;
     });
 
+    // Leer el logo y convertirlo a base64
+    let logoBase64 = '';
+    try {
+        const logoPath = path.join(__dirname, '../../..', 'front-end', 'src', 'images', 'agLogo.png');
+        const logoBuffer = fs.readFileSync(logoPath);
+        logoBase64 = `data:image/png;base64,${logoBuffer.toString('base64')}`;
+    } catch (error) {
+        console.error('Error al cargar el logo:', error);
+    }
+
     return `
 <!DOCTYPE html>
 <html lang="es">
@@ -190,11 +202,37 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
             border-radius: 16px;
             margin-bottom: 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: auto;
+            opacity: 0.9;
         }
 
         .header h1 {
             font-size: 2rem;
             margin-bottom: 10px;
+        }
+
+        /* Marca de agua */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            opacity: 0.08;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .watermark img {
+            width: 600px;
+            height: auto;
         }
 
         .header p {
@@ -504,8 +542,16 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
     </style>
 </head>
 <body>
+    <!-- Marca de agua -->
+    ${logoBase64 ? `
+    <div class="watermark">
+        <img src="${logoBase64}" alt="Marca de agua" />
+    </div>
+    ` : ''}
+
     <div class="container">
         <div class="header">
+            ${logoBase64 ? `<img src="${logoBase64}" alt="Logo" class="header-logo" />` : ''}
             <h1>Reporte de Objetivos${trimestre ? ` - Trimestre ${trimestre}` : ' - Completo'}</h1>
             <p>${nombreEmpleado}</p>
             <p style="font-size: 0.9rem; margin-top: 10px;">Generado el ${format(new Date(), 'dd/MM/yyyy')}</p>
@@ -553,43 +599,116 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
             </div>
         </div>
 
-        <h3 style="margin-left: 17px; margin-bottom: 15px; color: #2c3e50;">Objetivos asignados:</h3>
-
-        <div class="objetivos-grid">
-            ${objetivos.map(objetivo => `
-                <div class="objetivo-card">
-                    <h2 class="objetivo-titulo">${objetivo.titulo}</h2>
+        <div class="leyenda-section">
+            <h2 style="margin-bottom: 8px;">Resumen de Objetivos</h2>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">
+                Peso asignado vs Desempeño alcanzado
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                ${objetivos.map((obj, index) => {
+                    const color = colores[index];
+                    const peso = obj.peso;
+                    const desempeno = Number(obj.puntuacion || 0);
+                    const desempenoReal = (desempeno / 100) * peso;
+                    const porcentajeCompletado = peso > 0 ? desempeno : 0;
                     
-                    <div class="objetivo-fechas">
-                        <div class="fecha-item">
-                            <span>Fecha de inicio:</span>
-                            <b>${objetivo.fechaInicio}</b>
-                        </div>
-                        <div class="fecha-item">
-                            <span>Fecha Final:</span>
-                            <b>${objetivo.fechaFinal}</b>
-                        </div>
-                        <div class="fecha-item">
-                            <span>Fue asignado el:</span>
-                            <b>${objetivo.fechaAsignacion}</b>
-                        </div>
-                    </div>
+                    // Configuración del círculo SVG
+                    const size = 120;
+                    const strokeWidth = 12;
+                    const radius = (size - strokeWidth) / 2;
+                    const circumference = 2 * Math.PI * radius;
+                    const strokeDashoffset = circumference - (porcentajeCompletado / 100) * circumference;
+                    
+                    return `
+                        <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border: 1px solid #e0e0e0; page-break-inside: avoid;">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                                <!-- Círculo de progreso -->
+                                <div style="position: relative; width: ${size}px; height: ${size}px;">
+                                    <svg width="${size}" height="${size}" style="transform: rotate(-90deg);">
+                                        <!-- Círculo de fondo -->
+                                        <circle
+                                            cx="${size / 2}"
+                                            cy="${size / 2}"
+                                            r="${radius}"
+                                            fill="none"
+                                            stroke="#e5e7eb"
+                                            stroke-width="${strokeWidth}"
+                                        />
+                                        <!-- Círculo de progreso -->
+                                        <circle
+                                            cx="${size / 2}"
+                                            cy="${size / 2}"
+                                            r="${radius}"
+                                            fill="none"
+                                            stroke="${color}"
+                                            stroke-width="${strokeWidth}"
+                                            stroke-dasharray="${circumference}"
+                                            stroke-dashoffset="${strokeDashoffset}"
+                                            stroke-linecap="round"
+                                        />
+                                    </svg>
+                                    
+                                    <!-- Porcentaje en el centro -->
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                        <div style="font-size: 1.5rem; font-weight: bold; color: #2c3e50; line-height: 1;">
+                                            ${porcentajeCompletado.toFixed(0)}%
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: #666; margin-top: 2px;">
+                                            completado
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <hr>
+                                <!-- Información del objetivo -->
+                                <div style="width: 100%;">
+                                    <h3 style="color: #2c3e50; font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; text-align: center;">
+                                        ${obj.titulo}
+                                    </h3>
+                                    
+                                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                                        <!-- Peso asignado -->
+                                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                            <span style="font-size: 1.2rem;">⚖</span>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; color: #666;">Peso asignado</div>
+                                                <div style="font-size: 1rem; font-weight: 600; color: #2c3e50;">${peso}%</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Desempeño -->
+                                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                            <span style="font-size: 1.2rem;">📊</span>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; color: #666;">Desempeño</div>
+                                                <div style="font-size: 1rem; font-weight: 600; color: #2c3e50;">${desempeno.toFixed(2)}%</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Completado del peso -->
+                                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff8e6; border-radius: 8px; border-left: 3px solid ${color};">
+                                            <span style="font-size: 1.2rem;">✓</span>
+                                            <div style="flex: 1;">
+                                                <div style="font-size: 0.85rem; color: #666;">Completado del peso</div>
+                                                <div style="font-size: 1rem; font-weight: 600; color: ${color};">
+                                                    ${desempenoReal.toFixed(2)}% de ${peso}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                    <p class="objetivo-descripcion">
-                        <strong>Descripción:</strong> ${objetivo.descripcion}
-                    </p>
-
-                    <div class="objetivo-progreso">
-                        <span class="progreso-label">Peso:</span>
-                        <div class="progreso-bar">
-                            <div class="progreso-fill" style="width: ${objetivo.peso}%"></div>
+                                    <!-- Barra de progreso lineal -->
+                                    <div style="margin-top: 15px;">
+                                        <div style="height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: ${porcentajeCompletado}%; background: ${color}; border-radius: 4px; transition: width 0.3s ease;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <span class="progreso-value">${objetivo.peso}%</span>
-                    </div>
-                </div>
-            `).join('')}
+                    `;
+                }).join('')}
+            </div>
         </div>
 
         <div class="footer">

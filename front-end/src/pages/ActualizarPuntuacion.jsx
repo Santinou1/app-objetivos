@@ -1,12 +1,14 @@
 import '../styles/ActualizarPuntuacion.css'
 import axios from 'axios';
-import {Navigate, useParams} from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fechaISO, formatearISOtoFecha } from "../components/fechaHoy";
 import { getApiUrl } from '../config/configURL';
+import Swal from 'sweetalert2';
 
 function ActualizarPuntuacion(){
     const url = getApiUrl();
+    const navigate = useNavigate();
     const {asignacion, empleado, objetivo, trimestre} = useParams();
     const fecha = fechaISO();
     const [puntuacion, setPuntuacion] = useState(0);
@@ -15,7 +17,6 @@ function ActualizarPuntuacion(){
     const [getObjetivo, setGetObjetivo] = useState(null);
     const [getEmpleado, setGetEmpleado] = useState(null);
     const [getAsignacion, SetGetAsignacion] = useState(null);
-    const [redireccion, setRedireccion] = useState(null);
     
     const [error, setError] = useState('')
     const maxPeso = 100; // Límite máximo de peso por trimestre
@@ -71,9 +72,19 @@ function ActualizarPuntuacion(){
             const response = await axios.post(`${url}/api/puntuacion/`, data);
             console.log(response)
             if(response.status === 202){
-                console.log('Eentre aca')
+                console.log('Puntuación actualizada correctamente')
                 
-                setRedireccion(true);
+                // Mostrar popup de éxito
+                await Swal.fire({
+                    title: '¡Actualizado!',
+                    text: 'La puntuación se actualizó correctamente',
+                    icon: 'success',
+                    confirmButtonColor: '#fbb003',
+                    confirmButtonText: 'Aceptar'
+                });
+                
+                // Navegar de vuelta al feed del empleado en la tab de detalles
+                navigate(`/feed/objetivos/${empleado}`, { state: { tabActiva: 'detalles' } });
             }
         }catch(err){
            if(err.response){
@@ -84,9 +95,6 @@ function ActualizarPuntuacion(){
             setError('Error en la configuracion de la solicitud: '+ err.message);
            }
         }
-    }
-    if(redireccion){
-        return <Navigate to={`/redireccion/puntuacion/${empleado}`}></Navigate>
     }
     
     return (

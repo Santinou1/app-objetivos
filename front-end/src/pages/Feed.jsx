@@ -11,19 +11,20 @@ import { getApiUrl } from "../config/configURL";
 import Leyenda from "../components/Leyenda.jsx";
 import GraficoObjetivos from "../components/GraficoObjetivos";
 import TabsNavegacion from "../components/TabsNavegacion";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 function Feed(){
     const url = getApiUrl();
     const {user} = useUserContext();
     const {id} = useParams();
+    const location = useLocation();
     const [hoveredIndex, setHoveredIndex] = useState(null);
 
     const [objetivos, setObjetivos] = useState(null); 
     const [empleado, setEmpleado] = useState(null);
     const [colores, setColores] = useState([]);
     const [puntuaciones, setPuntuaciones] = useState(null);
-    const [tabActiva, setTabActiva] = useState('resumen');
+    const [tabActiva, setTabActiva] = useState(location.state?.tabActiva || 'resumen');
 
     const handleMouseEnter = (index) => setHoveredIndex(index);
     const handleMouseLeave = () => setHoveredIndex(null);

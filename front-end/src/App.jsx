@@ -23,6 +23,7 @@ import ContenedorFeed from './components/contenedorFeed.jsx';
 import ActualizarEstadoCertificacion from './pages/ActualizarEstadoCertificacion.jsx'; 
 import CertificacionEmpleado from './pages/CertificacionEmpleado.jsx';
 import ActualizarCertificacion from './pages/ActualizarCertificacion.jsx';
+import Watermark from './components/Watermark.jsx';
 function App() {
 
   const {user} = useUserContext();
@@ -30,6 +31,9 @@ function App() {
   return (
     <Router>
       <div className='App'>
+        {/* Marca de agua en toda la aplicación */}
+        <Watermark />
+        
         {
           user ? <Navegacion /> : <>
           </>

@@ -6,8 +6,10 @@ import { useState } from 'react';
 function BotonPdfTrimestre({nombreEmpleado, idEmpleado}){
     const url = getApiUrl();
     const [mostrarOpciones, setMostrarOpciones] = useState(false);
+    const [cargando, setCargando] = useState(false);
     
     const generarPdf = async (trimestre = null) => {
+        setCargando(true);
         try {
             console.log('📄 Iniciando generación de PDF...');
             console.log('Datos:', { idEmpleado, nombreEmpleado, trimestre });
@@ -49,6 +51,7 @@ function BotonPdfTrimestre({nombreEmpleado, idEmpleado}){
             console.log('✅ PDF descargado exitosamente');
             setMostrarOpciones(false);
         } catch (error) {
+            setCargando(false);
             console.error('❌ Error al generar el PDF:', error);
             console.error('Detalles del error:', error.response?.data);
             
@@ -60,16 +63,20 @@ function BotonPdfTrimestre({nombreEmpleado, idEmpleado}){
             } else {
                 alert(`Hubo un error al generar el PDF: ${error.message}`);
             }
+        } finally {
+            setCargando(false);
         }
     }
 
     const toggleOpciones = () => {
-        setMostrarOpciones(!mostrarOpciones);
+        if (!cargando) {
+            setMostrarOpciones(!mostrarOpciones);
+        }
     }
 
     return(
         <div className="contenedor-pdf-trimestre">
-            <div className="boton-pdf no-print" onClick={toggleOpciones}>
+            <div className={`boton-pdf no-print ${cargando ? 'cargando' : ''}`} onClick={toggleOpciones}>
                 <svg
                     width="32px"
                     height="32px"
@@ -86,11 +93,20 @@ function BotonPdfTrimestre({nombreEmpleado, idEmpleado}){
                         ></path>
                     </g>
                 </svg>
-                <p className='label-pdf'>Generar PDF</p>
-                <span className="flecha-dropdown">▼</span>
+                {cargando ? (
+                    <>
+                        <div className="spinner-pdf"></div>
+                        <p className='label-pdf'>Generando...</p>
+                    </>
+                ) : (
+                    <>
+                        <p className='label-pdf'>Generar PDF</p>
+                        <span className="flecha-dropdown">▼</span>
+                    </>
+                )}
             </div>
             
-            {mostrarOpciones && (
+            {mostrarOpciones && !cargando && (
                 <div className="opciones-pdf">
                     <button onClick={() => generarPdf()}>Reporte Completo</button>
                     <button onClick={() => generarPdf(1)}>Trimestre 1</button>
