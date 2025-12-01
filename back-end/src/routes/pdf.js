@@ -86,6 +86,37 @@ async function generarPDF(req, res) {
             });
             
             objetivo.puntuacion = puntuacion.promedio || 0;
+            
+            // Obtener comentarios según el trimestre especificado
+            let queryComentarios, queryParamsComentarios;
+            
+            if (trimestre) {
+                // Si es un trimestre específico, solo obtener ese trimestre
+                queryComentarios = `
+                    SELECT trimestre, comentario, valor, fechaPuntuacion
+                    FROM Puntuacion 
+                    WHERE objetivo = ? AND trimestre = ?
+                `;
+                queryParamsComentarios = [objetivo.idObjetivoEmpleado, trimestre];
+            } else {
+                // Si es reporte completo, obtener todos los trimestres
+                queryComentarios = `
+                    SELECT trimestre, comentario, valor, fechaPuntuacion
+                    FROM Puntuacion 
+                    WHERE objetivo = ? AND trimestre > 0
+                    ORDER BY trimestre ASC
+                `;
+                queryParamsComentarios = [objetivo.idObjetivoEmpleado];
+            }
+            
+            const comentarios = await new Promise((resolve, reject) => {
+                connection.query(queryComentarios, queryParamsComentarios, (err, results) => {
+                    if (err) reject(err);
+                    else resolve(results || []);
+                });
+            });
+            
+            objetivo.comentarios = comentarios;
         }
 
         console.log('🎨 Generando HTML...');
@@ -557,19 +588,9 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
             <p style="font-size: 0.9rem; margin-top: 10px;">Generado el ${format(new Date(), 'dd/MM/yyyy')}</p>
         </div>
 
-        <div class="leyenda-section">
-            <h2>Desempeño Total: ${desempenoTotal.toFixed(2)}%</h2>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                ${trimestre 
-                    ? `Calculado como: Promedio de puntuaciones del trimestre ${trimestre} (${sumaPuntuaciones.toFixed(2)}% / ${objetivos.length} objetivos)`
-                    : `Calculado como: Suma total de todos los promedios de puntuaciones (${sumaPuntuaciones.toFixed(2)}%)`
-                }
-            </p>
-        </div>
-
         <div class="contenedor-leyendas">
             <div class="contenedor-leyenda">
-                <h3>Barra de peso de los objetivos</h3>
+                <h3>Valor Anual del Objetivo</h3>
                 ${objetivos.map((obj, index) => {
                     const color = colores[index];
                     const porcentaje = obj.peso;
@@ -584,7 +605,7 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
             </div>
 
             <div class="contenedor-leyenda">
-                <h3>Barra de desempeño</h3>
+                <h3>Porcentaje del Progreso del Valor Anual</h3>
                 ${objetivos.map((obj, index) => {
                     const color = colores[index];
                     const promedioPuntuacion = Number(obj.puntuacion || 0); // Promedio de los 4 trimestres
@@ -676,20 +697,11 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
                                             </div>
                                         </div>
                                         
-                                        <!-- Desempeño -->
-                                        <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
-                                            <span style="font-size: 1.2rem;">📊</span>
-                                            <div style="flex: 1;">
-                                                <div style="font-size: 0.85rem; color: #666;">Desempeño</div>
-                                                <div style="font-size: 1rem; font-weight: 600; color: #2c3e50;">${desempeno.toFixed(2)}%</div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Completado del peso -->
+                                        <!-- Desempeño hasta la fecha -->
                                         <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff8e6; border-radius: 8px; border-left: 3px solid ${color};">
                                             <span style="font-size: 1.2rem;">✓</span>
                                             <div style="flex: 1;">
-                                                <div style="font-size: 0.85rem; color: #666;">Completado del peso</div>
+                                                <div style="font-size: 0.85rem; color: #666;">Desempeño hasta la fecha</div>
                                                 <div style="font-size: 1rem; font-weight: 600; color: ${color};">
                                                     ${desempenoReal.toFixed(2)}% de ${peso}%
                                                 </div>
@@ -703,6 +715,36 @@ function generarHTMLTemplate(nombreEmpleado, objetivos, trimestre = null) {
                                             <div style="height: 100%; width: ${porcentajeCompletado}%; background: ${color}; border-radius: 4px; transition: width 0.3s ease;"></div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Descripciones por trimestre -->
+                                    ${obj.comentarios && obj.comentarios.length > 0 ? `
+                                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                                            <h4 style="color: #2c3e50; font-size: 0.95rem; margin-bottom: 12px; font-weight: 600;">
+                                                📝 Descripciones por Trimestre
+                                            </h4>
+                                            ${obj.comentarios.map(com => `
+                                                <div style="margin-bottom: 12px; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 3px solid ${color};">
+                                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                                        <span style="font-weight: 600; color: #2c3e50; font-size: 0.9rem;">
+                                                            Trimestre ${com.trimestre}
+                                                        </span>
+                                                        <span style="color: #666; font-size: 0.85rem;">
+                                                            Puntuación: ${com.valor}%
+                                                        </span>
+                                                    </div>
+                                                    ${com.comentario && com.comentario.trim() !== '' ? `
+                                                        <p style="color: #4a5568; font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                                                            ${com.comentario}
+                                                        </p>
+                                                    ` : `
+                                                        <p style="color: #9ca3af; font-size: 0.85rem; font-style: italic; margin: 0;">
+                                                            Sin descripción
+                                                        </p>
+                                                    `}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             </div>
                         </div>

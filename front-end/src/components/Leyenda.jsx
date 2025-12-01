@@ -7,8 +7,8 @@ function Leyenda({colores, objetivos, hoveredIndex, onMouseEnter, onMouseLeave, 
             {objetivos.map((item, index) => {
                 const colorDeObjetivo = colores[index];
                 const objetivo = item.titulo;
-                const porcentaje = tituloLeyenda === 'Barra de peso de los objetivos' ? (item.peso || 0) : (item.despeno || 0);
-                const porcentajeFormateado = tituloLeyenda === 'Barra de desempeño' 
+                const porcentaje = tituloLeyenda === 'Valor Anual del Objetivo' ? (item.peso || 0) : (item.despeno || 0);
+                const porcentajeFormateado = tituloLeyenda === 'Porcentaje del Progreso del Valor Anual' 
                     ? `${Number(porcentaje).toFixed(2)}%` 
                     : `${porcentaje}%`;
                 

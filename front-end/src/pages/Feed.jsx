@@ -106,7 +106,7 @@ function Feed(){
                             
                             <div className="contenedor-leyendas">
                                 <Leyenda 
-                                    tituloLeyenda={'Barra de peso de los objetivos'}
+                                    tituloLeyenda={'Valor Anual del Objetivo'}
                                     objetivos={objetivos} 
                                     colores={colores} 
                                     onMouseEnter={handleMouseEnter}
@@ -114,7 +114,7 @@ function Feed(){
                                     hoveredIndex={hoveredIndex} 
                                 />
                                 <Leyenda 
-                                    tituloLeyenda={'Barra de desempeño'}
+                                    tituloLeyenda={'Porcentaje del Progreso del Valor Anual'}
                                     objetivos={puntuaciones} 
                                     colores={colores} 
                                     onMouseEnter={handleMouseEnter}
