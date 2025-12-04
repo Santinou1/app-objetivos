@@ -11,12 +11,18 @@ function DesempenoTotal({objetivos}){
       return;
     }
     
-    // Cálculo: suma total de todos los promedios de puntuaciones
-    const sumaPuntuaciones = objetivos.reduce((acumulador, item) => {
-      return acumulador + Number(item.despeno || 0);
+    // Cálculo del desempeño ponderado:
+    // Para cada objetivo: (desempeño × peso) / 100
+    // Esto da el desempeño real considerando el peso del objetivo
+    const desempenoPonderado = objetivos.reduce((acumulador, item) => {
+      const desempeno = Number(item.despeno || 0);
+      const peso = Number(item.peso || 0);
+      // El desempeño real es: (desempeño% × peso%) / 100
+      const desempenoReal = (desempeno * peso) / 100;
+      return acumulador + desempenoReal;
     }, 0);
     
-    setTotal(sumaPuntuaciones);
+    setTotal(desempenoPonderado);
   }, [objetivos]); 
     return(
         <>

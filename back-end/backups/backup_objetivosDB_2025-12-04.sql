@@ -19,7 +19,7 @@
 -- Current Database: `objetivosDB`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `objetivosDB` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `objetivosDB` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `objetivosDB`;
 
@@ -39,7 +39,7 @@ CREATE TABLE `ArchivoCertificacion` (
   PRIMARY KEY (`idArchivoCertificacion`),
   KEY `certificacion` (`certificacion`),
   CONSTRAINT `ArchivoCertificacion_ibfk_1` FOREIGN KEY (`certificacion`) REFERENCES `certificacionempleado` (`idCertificacionEmpleado`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `Archivos` (
   PRIMARY KEY (`idArchivo`),
   KEY `puntuacion` (`puntuacion`),
   CONSTRAINT `Archivos_ibfk_1` FOREIGN KEY (`puntuacion`) REFERENCES `Puntuacion` (`idPuntuacion`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ DROP TABLE IF EXISTS `Areas`;
 CREATE TABLE `Areas` (
   `nombre` varchar(50) NOT NULL,
   PRIMARY KEY (`nombre`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `Canje` (
   KEY `premio_id` (`premio_id`),
   CONSTRAINT `Canje_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `Usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Canje_ibfk_2` FOREIGN KEY (`premio_id`) REFERENCES `Premio` (`premio_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `Empleado` (
   `puesto` varchar(100) NOT NULL,
   `area` varchar(100) NOT NULL,
   PRIMARY KEY (`idEmpleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +176,7 @@ CREATE TABLE `Objetivo` (
   `fechaFinal` date DEFAULT NULL,
   PRIMARY KEY (`idObjetivo`),
   CONSTRAINT `Objetivo_chk_1` CHECK ((`peso` between 0 and 100))
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `ObjetivoEmpleado` (
   KEY `objetivo` (`objetivo`),
   CONSTRAINT `ObjetivoEmpleado_ibfk_1` FOREIGN KEY (`empleado`) REFERENCES `Empleado` (`idEmpleado`) ON DELETE CASCADE,
   CONSTRAINT `ObjetivoEmpleado_ibfk_2` FOREIGN KEY (`objetivo`) REFERENCES `Objetivo` (`idObjetivo`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,7 +234,7 @@ CREATE TABLE `Premio` (
   `costo_puntos` int NOT NULL,
   `stock` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`premio_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +267,7 @@ CREATE TABLE `Puntuacion` (
   CONSTRAINT `chk_trimestre` CHECK ((`trimestre` between 0 and 4)),
   CONSTRAINT `chk_valor` CHECK ((`valor` between 0 and 100)),
   CONSTRAINT `Puntuacion_chk_1` CHECK ((`valor` between 0 and 100))
-) ENGINE=InnoDB AUTO_INCREMENT=374 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=374 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +294,7 @@ CREATE TABLE `Puntuacion_backup` (
   `fechaPuntuacion` date DEFAULT NULL,
   `comentario` varchar(2500) NOT NULL,
   `trimestre` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -326,7 +326,7 @@ CREATE TABLE `Transferencia` (
   KEY `receptor_id` (`receptor_id`),
   CONSTRAINT `Transferencia_ibfk_1` FOREIGN KEY (`emisor_id`) REFERENCES `Usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Transferencia_ibfk_2` FOREIGN KEY (`receptor_id`) REFERENCES `Usuario` (`idUsuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +359,7 @@ CREATE TABLE `Usuario` (
   UNIQUE KEY `email` (`email`),
   KEY `empleado` (`empleado`),
   CONSTRAINT `Usuario_ibfk_1` FOREIGN KEY (`empleado`) REFERENCES `Empleado` (`idEmpleado`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,7 +388,7 @@ CREATE TABLE `certificacion` (
   PRIMARY KEY (`idCertificacion`),
   KEY `marca` (`marca`),
   CONSTRAINT `certificacion_ibfk_1` FOREIGN KEY (`marca`) REFERENCES `marcas` (`nombreMarca`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,7 +422,7 @@ CREATE TABLE `certificacionempleado` (
   KEY `empleado` (`empleado`),
   CONSTRAINT `certificacionempleado_ibfk_1` FOREIGN KEY (`empleado`) REFERENCES `Empleado` (`idEmpleado`) ON DELETE CASCADE,
   CONSTRAINT `certificacionempleado_ibfk_2` FOREIGN KEY (`certificado`) REFERENCES `certificacion` (`idCertificacion`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,7 +445,7 @@ DROP TABLE IF EXISTS `marcas`;
 CREATE TABLE `marcas` (
   `nombreMarca` varchar(100) NOT NULL,
   PRIMARY KEY (`nombreMarca`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +472,7 @@ CREATE TABLE `puntuacionbkp` (
   `fechaPuntuacion` date DEFAULT NULL,
   `comentario` varchar(2500) NOT NULL,
   `trimestre` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
